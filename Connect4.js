@@ -91,6 +91,17 @@ function checkRow(cell){
   }
 }
 
+}
+function checkCol(cell){
+  var start=cell-x;
+  var end=cell-x+56;
+  for (var i=start; i<=end-24; i++){
+    if (board[i]==board[i+8]&&board[i]==board[i+16]&&board[i]==board[i+24]&&board[i]==board[i+32]){
+      gameOver=true;
+    }
+  }
+}
+
 function reset() {
   round = 0;
   board = [0];
