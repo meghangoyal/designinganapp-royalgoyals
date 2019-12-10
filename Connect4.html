@@ -20,8 +20,14 @@
       <div class="col">
         <h1><b>Scoreboard</b></h1>
         <br>
-        <div class="" id="xScore"></div>
-        <div class="" id="oScore"></div>
+        <div class="" id="pinkScore"></div>
+        <div class="" id="goldScore"></div>
+        <div class="d-none" id="pinkWinner" style="color:White">
+          <h1><b>Player Pink Wins !!</b></h1>
+        </div>
+        <div class="d-none" id="goldWinner" style="color:White">
+          <h1><b>Player Gold Wins !!</b></h1>
+        </div>
       </div>
     </div>
     <br>
@@ -29,11 +35,5 @@
     <script src="Connect4.js"></script>
     <br>
     <button type="button" name="button" onclick="reset()">Reset</button>
-    <div class="d-none" id="pinkWinner" style="color:White">
-      <h1><b>Player Pink Wins !!</b></h1>
-    </div>
-    <div class="d-none" id="goldWinner" style="color:White">
-      <h1><b>Player Gold Wins !!</b></h1>
-    </div>
   </body>
 </html>
