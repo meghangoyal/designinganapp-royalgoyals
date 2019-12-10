@@ -1,8 +1,10 @@
-body {
+body.main {
   background-color: #100363
 }
-h1  {
-  text-align: center
+h1.gold  {
+  text-align: center;
+  color: #FFB900;
+
 }
 img.img-index {
   height: 130px;
@@ -12,4 +14,8 @@ img.img-index {
 img.img-index2 {
   height: 250px;
   width: 320px;
+}
+
+h3.gold {
+  color: #FFB900
 }
