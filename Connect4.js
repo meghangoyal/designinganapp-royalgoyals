@@ -35,10 +35,11 @@ canvas.addEventListener('mousemove', function(e){
 });
 
 canvas.addEventListener('click', function(e) {
-  x = Math.floor(mouse.x/70);
+  x = Math.floor((mouse.x+15)/70);
   y = Math.floor(mouse.y/70);
+  console.log("mouse.x: "+ mouse.x+ " mouse.y: "+ mouse.y);
+  console.log("x: "+x+" y: "+y);
   play(x);
-  console.log("X: " + x + "Y: " + y);
 });
 
 function play(x){
@@ -46,14 +47,14 @@ function play(x){
     reset();
     gameOver=false;
     currentPlayer="Pink";
-    document.getElementById("xWinner").classList.add('d-none');
-    document.getElementById("oWinner").classList.add('d-none');
+    document.getElementById("pinkWinner").classList.add('d-none');
+    document.getElementById("goldWinner").classList.add('d-none');
   }
-  var row=8*7;
+  var row=7;
   var filled=true;
   var cell=x;
   while (row>=0 && filled){
-    cell=x+row;
+    cell=x+row*8;
     if (board[cell]=="Pink"||board[cell]=="Gold"){
       filled=true;
     }
@@ -61,24 +62,29 @@ function play(x){
       filled=false;
       board[cell]=currentPlayer;
     }
-    row=row-8;
+    row=row-1;
   }
+  y=row+1;
   if (filled){
     console.log("This column is filled");
   }
   else{
     board[cell]=currentPlayer;
-    if (currentPlayer=="Pink"){
-      currentPlayer="Gold";
-    }
-    else{
-      currentPlayer="Pink";
-    }
+    switchPlayer();
   }
   console.log("Cell: "+cell);
   checkRow(cell);
-  // checkCol(cell);
-  // checkDiag(cell);
+  checkCol(cell);
+  checkDiag(cell);
+}
+
+function switchPlayer(){
+  if (currentPlayer=="Pink"){
+    currentPlayer="Gold";
+  }
+  else{
+    currentPlayer="Pink";
+  }
 }
 
 function checkRow(cell){
@@ -86,18 +92,73 @@ function checkRow(cell){
   var end=cell-x+7;
   for (var i=start; i<=end-3; i++){
     if (board[i]==board[i+1]&&board[i]==board[i+2]&&board[i]==board[i+2]&&board[i]==board[i+3]){
+      switchPlayer();
+      console.log(currentPlayer+" Wins!");
       gameOver=true;
     }
   }
 }
 
-}
 function checkCol(cell){
-  var start=cell-x;
-  var end=cell-x+56;
-  for (var i=start; i<=end-24; i++){
-    if (board[i]==board[i+8]&&board[i]==board[i+16]&&board[i]==board[i+24]&&board[i]==board[i+32]){
+  var start=x;
+  var end=x+56;
+  for (var i=start; i<=end-24; i+=8){
+    if (board[i]==board[i+8]&&board[i]==board[i+16]&&board[i]==board[i+24]){
+      switchPlayer();
+      console.log(currentPlayer+" Wins!");
       gameOver=true;
+    }
+  }
+}
+
+function checkDiag(cell){
+  console.log("Coords (x  y): "+x+" "+y);
+  //Check First Diagonal (Top Left to Bottom Right)
+  while (x>0&&y>0){
+    x=x-1;
+    y=y-1;
+  }
+  start=x+y*8;
+  while(x<7&&y<7){
+    x+=1;
+    y+=1;
+  }
+  end=x+y*8;
+  var diff=end-start;
+  if (diff/9<3){
+    currentPlayer=currentPlayer;
+  }
+  else{
+    for (var i=start; i<=end-27; i++){
+      if (board[i]==board[i+9]&&board[i]==board[i+18]&&board[i]==board[i+27]){
+        switchPlayer();
+        console.log(currentPlayer+" Wins!");
+        gameOver=true;
+      }
+    }
+  }
+  //Check Second Diagonal (Bottom Left to Top Right)
+  while (x>0&&y<7){
+    x=x-1;
+    y=y+1;
+  }
+  end=x+y*8;
+  while(x<7&&y>0){
+    x+=1;
+    y-=1;
+  }
+  start=x+y*8;
+  var diff=end-start;
+  if (diff/7<3){
+    currentPlayer=currentPlayer;
+  }
+  else{
+    for (var i=start; i<=end-21; i++){
+      if (board[i]==board[i+7]&&board[i]==board[i+14]&&board[i]==board[i+21]){
+        switchPlayer();
+        console.log(currentPlayer+" Wins!");
+        gameOver=true;
+      }
     }
   }
 }
@@ -129,31 +190,6 @@ function draw () {
       ctx.lineTo(canvas.width, i*cellSize);
       ctx.stroke();
     }
-
-
-    // ctx.moveTo(cellSize, 0);
-    // ctx.lineTo(cellSize, canvas.height);
-    // ctx.stroke();
-    //
-    // ctx.moveTo(2*cellSize, 0);
-    // ctx.lineTo(2*cellSize, canvas.height);
-    // ctx.stroke();
-    //
-    // ctx.moveTo(3*cellSize, 0);
-    // ctx.lineTo(3*cellSize, canvas.height);
-    // ctx.stroke();
-    //
-    // ctx.moveTo(0, cellSize);
-    // ctx.lineTo(canvas.width, cellSize);
-    // ctx.stroke();
-    //
-    // ctx.moveTo(0, 2*cellSize);
-    // ctx.lineTo(canvas.width, 2*cellSize);
-    // ctx.stroke();
-    //
-    // ctx.moveTo(0, 3*cellSize);
-    // ctx.lineTo(canvas.width, 3*cellSize);
-    // ctx.stroke();
   }
 
   function fillBoard () {
