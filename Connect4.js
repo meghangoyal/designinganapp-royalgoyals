@@ -42,6 +42,13 @@ canvas.addEventListener('click', function(e) {
   play(x);
 });
 
+var pinkWins=0;
+var goldWins=0;
+var pinkScores="Pink: "+ pinkWins;
+var goldScores="Gold: "+ goldWins;
+document.getElementById("pinkScore").innerHTML=pinkScores;
+document.getElementById("goldScore").innerHTML=goldScores;
+
 function play(x){
   if(gameOver){
     reset();
@@ -92,6 +99,7 @@ function checkRow(cell){
   var end=cell-x+7;
   for (var i=start; i<=end-3; i++){
     if (board[i]==board[i+1]&&board[i]==board[i+2]&&board[i]==board[i+2]&&board[i]==board[i+3]){
+      declareWinner();
       switchPlayer();
       console.log(currentPlayer+" Wins!");
       gameOver=true;
@@ -104,6 +112,7 @@ function checkCol(cell){
   var end=x+56;
   for (var i=start; i<=end-24; i+=8){
     if (board[i]==board[i+8]&&board[i]==board[i+16]&&board[i]==board[i+24]){
+      declareWinner();
       switchPlayer();
       console.log(currentPlayer+" Wins!");
       gameOver=true;
@@ -131,6 +140,7 @@ function checkDiag(cell){
   else{
     for (var i=start; i<=end-27; i++){
       if (board[i]==board[i+9]&&board[i]==board[i+18]&&board[i]==board[i+27]){
+        declareWinner();
         switchPlayer();
         console.log(currentPlayer+" Wins!");
         gameOver=true;
@@ -155,12 +165,29 @@ function checkDiag(cell){
   else{
     for (var i=start; i<=end-21; i++){
       if (board[i]==board[i+7]&&board[i]==board[i+14]&&board[i]==board[i+21]){
+        declareWinner();
         switchPlayer();
         console.log(currentPlayer+" Wins!");
         gameOver=true;
       }
     }
   }
+}
+
+function declareWinner(){
+  if (currentPlayer=="Pink"){
+    goldWins++;
+    document.getElementById("goldWinner").classList.remove('d-none');
+  }
+  else{
+    pinkWins++;
+    document.getElementById("pinkWinner").classList.remove('d-none');
+  }
+  pinkScores="Pink: "+ pinkWins;
+  goldScores="Gold: "+ goldWins;
+  document.getElementById("pinkScore").innerHTML=pinkScores;
+  document.getElementById("goldScore").innerHTML=goldScores;
+  gameOver=true;
 }
 
 function reset() {
